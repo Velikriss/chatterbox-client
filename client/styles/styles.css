@@ -22,6 +22,11 @@ body {
     padding: 5px;
 }
 
+#main h1:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
 #main h1 span {
     font-style:italic;
 }
@@ -69,7 +74,7 @@ form input[type=text] {
     font-weight: 800;
 }
 
-.chat:hover {
+.post:hover {
     background-color: #ddd;
 }
 
@@ -85,7 +90,7 @@ form input[type=text] {
 
 .friend {
     color: #fff;
-    background-color: #0090da;
+    text-shadow: 2px 2px 5px goldenrod, -2px -2px 5px goldenrod;
 }
 
 .username {
@@ -101,5 +106,35 @@ form input[type=text] {
 .post {
     position:relative;
     left: -10000px;
+    margin: 2px;
+    padding: 4px 8px;
+    background: #eee;
+}
+
+#send { 
+    padding:10px;
+    background-color: lightblue;
+    margin: auto;
+    width: 100%;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black; 
+}
+
+#message:active {
+    border: 1px solid lightblue;
+}
+
+.roomtag{
+    position: relative;
+    display: block;
+    text-align: right;
+    font-style: italic;
+    font-size: 50%;
+    padding: 3px;
+}
+
+.roomtag:hover {
+    text-decoration: underline;
+    color: blue;
 }
 
