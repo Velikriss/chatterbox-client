@@ -98,3 +98,8 @@ form input[type=text] {
     transition: font-size 2s;
 }
 
+.post {
+    position:relative;
+    left: -10000px;
+}
+
