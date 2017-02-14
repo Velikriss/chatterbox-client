@@ -88,3 +88,13 @@ form input[type=text] {
     background-color: #0090da;
 }
 
+.username {
+    font-size:22px;
+    transition: font-size 2s;
+}
+
+.username:hover {
+    font-size:40px;
+    transition: font-size 2s;
+}
+

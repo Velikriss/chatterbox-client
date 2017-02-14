@@ -19,14 +19,26 @@
       }
     </script>
     <!-- your scripts -->
-    <script src="env/config.js"></script>
-    <script src="scripts/app.js"></script>
   </head>
   <body>
+
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
     </div>
-    <div id="chats"></div>
+    <div id='send'>
+      <form class="submit">
+        <input id="message" type=text placeholder="Write a chat" required> 
+        <input class="submit" type="submit" value="Send Message">  
+      </form>
+    </div>
+    <div id="chats">
+      <div id='roomSelect'>
+
+      </div>
+      
+    </div>
+    <script src="env/config.js"></script>
+    <script src="scripts/app.js"></script>
   </body>
 </html>
