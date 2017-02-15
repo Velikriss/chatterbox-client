@@ -86,7 +86,7 @@ ChatterBox.prototype.fetch = function(sortOrder = 'createdAt') {
         if (app.lastPostID === currentList[i].objectId || app.lastPostID === undefined) {
           newPost = true;
           //to account for the first pass through
-          if (i === currentList.length - 1) {
+          if (i === currentList.length - 1 && (currentList[i].roomname === app.currentRoom || app.currentRoom === 'Main')) {
             app.renderRoom(currentList[i].roomname);
             app.renderMessage(currentList[i]);
           
@@ -125,8 +125,8 @@ ChatterBox.prototype.clearMessages = function() {
 ChatterBox.prototype.renderMessage = function(msg) {
   //var $msg = $(`div`);
   
-  var $username = $(`<span class='username'></span>`).text(msg.username + ': ');
-  var $post = $(`<div class='post'></div>`).text(`said @ ${msg.createdAt}: ${msg.text}`);
+  var $username = $(`<span class='username'></span>`).text(msg.username);
+  var $post = $(`<div class='post'></div>`).text(`: said @ ${msg.createdAt}: ${msg.text}`);
   var $roomTag = $(`<span class='roomtag'></span>`).text(msg.roomname);
   $post.prepend($username);
   $post.append($roomTag);

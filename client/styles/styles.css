@@ -1,15 +1,15 @@
 body {
-    background: #eee;
+     background-image: url('http://images.clipartpanda.com/lemon-clipart-cliparti1-lemon-clip-art.jpg');
+    background-size: 16.2%;
     text-align: center;
     padding: 0 25px;
     font-family: arial, sans-serif;
 }
 
 #main, #chats {
-    width: 500px;
+    width: 800px;
     margin: auto;
     text-align: left;
-    background: white;
     padding: 50px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
@@ -50,6 +50,12 @@ body {
     color: green;
     line-height: 13px;
 }
+#main {
+    background: yellow;
+}
+
+#chats {
+}
 
 form {
     padding: 20px;
@@ -75,7 +81,7 @@ form input[type=text] {
 }
 
 .post:hover {
-    background-color: #ddd;
+    background-color: #ffff19;
 }
 
 .spinner {
@@ -95,12 +101,12 @@ form input[type=text] {
 
 .username {
     font-size:22px;
-    transition: font-size 2s;
+    transition: font-size 1s;
 }
 
 .username:hover {
-    font-size:40px;
-    transition: font-size 2s;
+    font-size:24px;
+    transition: font-size 1s;
 }
 
 .post {
@@ -108,12 +114,12 @@ form input[type=text] {
     left: -10000px;
     margin: 2px;
     padding: 4px 8px;
-    background: #eee;
+    background: #fefe89;
 }
 
 #send { 
     padding:10px;
-    background-color: lightblue;
+    background-color: lightyellow;
     margin: auto;
     width: 100%;
     border-top: 2px solid black;
